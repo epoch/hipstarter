@@ -1,0 +1,7 @@
+{
+  "extends": "eslint:recommended",
+  "rules": {
+    "semi" : [2, "always"],
+    "max-len": [2, 120, 2]
+  }
+}
