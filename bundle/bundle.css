@@ -44,3 +44,8 @@ img {
   max-width: 100%;
   height: auto;
   border: 0; }
+
+.hipstarter {
+  background-color: mistyrose; }
+  .hipstarter h1 {
+    font-size: 3em; }
