@@ -11,10 +11,10 @@ simple gulp sass starter for quick prototypes
 
 clone into your own folder
 ```
-$ git clone
+$ git clone url new_folder_name
 ```
 
-cd into new foler and install dependencies
+cd into new folder and install dependencies
 ```
 $ npm install
 ```
