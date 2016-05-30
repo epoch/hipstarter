@@ -36,6 +36,10 @@ function serve() {
 function sass() {
   gulp.src('./scss/main.scss')
   .pipe( plugin.sass() )
+  .on('error', function(error) {
+    console.log(error);
+    this.end();
+  })
   .pipe( plugin.autoprefixer() )
   .pipe( plugin.rename('bundle.css') )
   .pipe( gulp.dest('bundle') )
