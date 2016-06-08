@@ -12,17 +12,15 @@ plugin.eslint = require('gulp-eslint');
 gulp.task('sass', sass);
 gulp.task('lint', lint);
 gulp.task('serve', serve);
-gulp.task('refresh', refresh);
 gulp.task('watch', watch);
 gulp.task('default', ['serve', 'watch']);
 
-function refresh() {
-  plugin.server.stream();
-}
-
 function watch() {
+  gulp.watch('./index.js', function() {
+    runSync('webpack', plugin.server.reload);
+  });
   gulp.watch('./scss/**/*.scss', function() {
-    runSync('sass', 'refresh');
+    runSync('sass', plugin.server.stream);
   });
   gulp.watch('./index.html').on('change', plugin.server.reload);
 }
