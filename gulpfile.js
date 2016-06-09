@@ -19,7 +19,9 @@ gulp.task('serve', serve);
 gulp.task('watch', watch);
 gulp.task('webpack', webpack);
 gulp.task('build', ['styles', 'webpack']);
-gulp.task('default', ['serve', 'build', 'watch'])
+gulp.task('default', ['build'], function() {
+  runSeq('serve', 'watch');
+})
 
 function webpack() {
   var loaders = {
@@ -48,7 +50,6 @@ function webpack() {
   PLUGINS.webpack(settings, function(err, stats) {
     if(err) throw new PLUGINS.util.PluginError("webpack", err);
     PLUGINS.util.log("[webpack]", stats.toString());
-    PLUGINS.server.reload();
   });
 }
 
