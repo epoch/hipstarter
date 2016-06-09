@@ -1,51 +1,85 @@
 /*eslint-env node*/
 var gulp = require('gulp');
-var runSync = require('run-sequence');
-var plugin = {};
+var path = require('path');
+var runSeq = require('run-sequence');
+const PORT = 3000;
+const PLUGINS = {};
 
-plugin.server = require('browser-sync').create();
-plugin.rename = require('gulp-rename');
-plugin.sass = require('gulp-sass');
-plugin.autoprefixer = require('gulp-autoprefixer');
-plugin.eslint = require('gulp-eslint');
+PLUGINS.util = require('gulp-util');
+PLUGINS.server = require('browser-sync').create();
+PLUGINS.rename = require('gulp-rename');
+PLUGINS.sass = require('gulp-sass');
+PLUGINS.autoprefixer = require('gulp-autoprefixer');
+PLUGINS.eslint = require('gulp-eslint');
+PLUGINS.webpack = require('webpack');
 
-gulp.task('sass', sass);
+gulp.task('styles', styles);
 gulp.task('lint', lint);
 gulp.task('serve', serve);
 gulp.task('watch', watch);
-gulp.task('default', ['serve', 'watch']);
+gulp.task('webpack', webpack);
+gulp.task('build', ['styles', 'webpack']);
+gulp.task('default', ['serve', 'build', 'watch'])
+
+function webpack() {
+  var loaders = {
+    babel: {
+      test: /\.js$/,
+      loader: 'babel-loader',
+      include: [path.join(__dirname, 'js')],
+      query: {
+        presets: ['es2015'],
+        compact: false
+      }
+    }
+  }
+
+  var settings = {
+    entry: './js/index.js',
+    output: {
+      path: path.join(__dirname, 'bundle'),
+      filename: 'bundle.js'
+    },
+    module: {
+      loaders: [loaders.babel]
+    }
+  }
+
+  PLUGINS.webpack(settings, function(err, stats) {
+    if(err) throw new PLUGINS.util.PluginError("webpack", err);
+    PLUGINS.util.log("[webpack]", stats.toString());
+    PLUGINS.server.reload();
+  });
+}
 
 function watch() {
-  gulp.watch('./index.js', function() {
-    runSync('webpack', plugin.server.reload);
-  });
+  gulp.watch('./js/**/*.js', ['webpack', 'lint']);
+  gulp.watch('./bundle/*.js', PLUGINS.server.reload);
   gulp.watch('./scss/**/*.scss', function() {
-    runSync('sass', plugin.server.stream);
+    runSeq('styles', PLUGINS.server.stream);
   });
-  gulp.watch('./index.html').on('change', plugin.server.reload);
+  gulp.watch('./index.html').on('change', PLUGINS.server.reload);
 }
 
 function serve() {
-  plugin.server.init({
-    server: './'
+  PLUGINS.server.init({
+    port: PORT,
+    server: './',
+    open: false
   });
 }
 
-function sass() {
+function styles() {
   gulp.src('./scss/main.scss')
-  .pipe( plugin.sass() )
-  .on('error', function(error) {
-    console.log(error);
-    this.end();
-  })
-  .pipe( plugin.autoprefixer() )
-  .pipe( plugin.rename('bundle.css') )
+  .pipe( PLUGINS.sass().on('error', PLUGINS.sass.logError) )
+  .pipe( PLUGINS.autoprefixer() )
+  .pipe( PLUGINS.rename('bundle.css') )
   .pipe( gulp.dest('bundle') )
-  .pipe( plugin.server.stream() );
+  .pipe( PLUGINS.server.stream() );
 }
 
 function lint() {
   gulp.src(['./js/**/*.js', './gulpfile'])
-    .pipe( plugin.eslint() )
-    .pipe( plugin.eslint.format() );
+    .pipe( PLUGINS.eslint() )
+    .pipe( PLUGINS.eslint.format() );
 }

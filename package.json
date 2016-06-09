@@ -5,20 +5,26 @@
   "main": "index.js",
   "scripts": {
     "start": "gulp",
+    "webpack": "gulp webpack",
     "tasks": "gulp --tasks",
     "lint": "gulp lint",
-    "sass": "gulp sass",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "sass": "gulp sass"
   },
   "author": "DT",
   "license": "ISC",
   "devDependencies": {
+    "babel-core": "^6.9.1",
+    "babel-eslint": "^6.0.4",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
     "browser-sync": "^2.12.8",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-eslint": "^2.0.0",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.3.1",
-    "run-sequence": "^1.2.0"
+    "gulp-util": "file:node_modules/gulp-util",
+    "run-sequence": "^1.2.0",
+    "webpack": "^1.13.1"
   }
 }

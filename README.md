@@ -1,11 +1,13 @@
 # hipstarter
 
-simple gulp sass starter for quick prototypes
+simple gulp webpack es6 sass starter for quick prototypes
 
+- modules with webpack
+- es6/es2015 with babel
 - sass
+- autoprefixer
 - browser-sync
 - eslint
-- autoprefixer
 
 # usage
 
@@ -23,3 +25,4 @@ start developing
 ```
 $ npm start
 ```
+navigate to localhost:3000 or change port in gulpfile
