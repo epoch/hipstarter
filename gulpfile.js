@@ -48,8 +48,10 @@ function webpack() {
   }
 
   PLUGINS.webpack(settings, function(err, stats) {
-    if(err) throw new PLUGINS.util.PluginError("webpack", err);
-    PLUGINS.util.log("[webpack]", stats.toString());
+    if (err) throw new PLUGINS.util.PluginError("webpack", err);
+    if (stats.hasErrors()) {
+      PLUGINS.util.log("[webpack]", stats.toJson().errors.toString());
+    }
   });
 }
 
