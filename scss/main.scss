@@ -1,22 +1,14 @@
 @charset 'UTF-8';
 
-// The 7-1 Pattern
-// https://sass-guidelin.es/#architecture
-
-// 1. Configuration and helpers
-@import 'abstracts/variables';
-
-// 2. Vendors
-
-// 3. Base stuff
+// 1. Base stuff
+@import 'base/mixins';
+@import 'base/variables';
 @import 'base/reset';
 @import 'base/typography';
 
-// 4. Layout-related sections
+// 2. Layout-related sections
 
-// 5. Components
+// 3. Components
 @import 'components/hipstarter';
 
-// 6. Page-specific styles
-
-// 7. Themes
+// 4. Page-specific styles
