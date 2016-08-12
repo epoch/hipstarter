@@ -56,9 +56,9 @@ function webpack() {
 }
 
 function watch() {
-  gulp.watch('./js/**/*.js', ['webpack', 'lint']);
-  gulp.watch('./bundle/*.js', PLUGINS.server.reload);
-  gulp.watch('./scss/**/*.scss', function() {
+  gulp.watch('js/**/*.js', ['webpack', 'lint']);
+  gulp.watch('bundle/*.js', PLUGINS.server.reload);
+  gulp.watch('scss/**/*.scss', function() {
     runSeq('styles', PLUGINS.server.stream);
   });
   gulp.watch('./index.html').on('change', PLUGINS.server.reload);
