@@ -1,5 +1,5 @@
 /* apply a natural box layout model to all elements,
-   but allow overriding */
+   but allow easier overriding */
 html {
   box-sizing: border-box;
 }
@@ -38,7 +38,7 @@ h4 {
 
 a,
 button {
-  color: inherit; /* dose not inherit be default */
+  color: inherit; /* dose not inherit by default */
   transition: .3s;
 }
 
