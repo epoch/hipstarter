@@ -2,6 +2,7 @@
 var gulp = require('gulp');
 var path = require('path');
 var runSeq = require('run-sequence');
+
 const PORT = 3000;
 const PLUGINS = {};
 
@@ -22,6 +23,15 @@ gulp.task('build', ['styles', 'webpack']);
 gulp.task('default', ['build'], function() {
   runSeq('serve', 'watch');
 })
+
+function watch() {
+  gulp.watch('js/**/*.js', ['webpack', 'lint']);
+  gulp.watch('bundle/*.js', PLUGINS.server.reload);
+  gulp.watch('scss/**/*.scss', function() {
+    runSeq('styles', PLUGINS.server.stream);
+  });
+  gulp.watch('./index.html').on('change', PLUGINS.server.reload);
+}
 
 function webpack() {
   var loaders = {
@@ -53,15 +63,6 @@ function webpack() {
       PLUGINS.util.log("[webpack]", stats.toJson().errors.toString());
     }
   });
-}
-
-function watch() {
-  gulp.watch('js/**/*.js', ['webpack', 'lint']);
-  gulp.watch('bundle/*.js', PLUGINS.server.reload);
-  gulp.watch('scss/**/*.scss', function() {
-    runSeq('styles', PLUGINS.server.stream);
-  });
-  gulp.watch('./index.html').on('change', PLUGINS.server.reload);
 }
 
 function serve() {
